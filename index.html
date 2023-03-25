@@ -1,1 +1,62 @@
-Hello World
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Quest List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Quest List</h1>
+  </header>
+  <div class="container" id="parent-element">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Quest Name</th>
+          <th>Difficulty</th>
+          <th>Length</th>
+          <th>Members</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+    <div id="quest-info">
+      <h3>Selected Quests</h3>
+      <div class="info-container">
+        <ul id="selected-quests-ul"></ul>
+      </div>
+      
+      <h3>Required Quests</h3>
+      <div class="info-container">
+        <ul id="required-quests-ul"></ul>
+      </div>
+      <h3>Required Items</h3>
+      <div class="info-container">
+        <ul id="required-items-ul"></ul>
+      </div>
+      <h3>Recommended Items</h3>
+      <div class="info-container">
+        <ul id="recommended-items-ul"></ul>
+      </div>
+      <h3>Required stats</h3>
+      <div class="info-container">
+        <ul id="required-stats-ul"></ul>
+      </div>
+      <h3>Awards</h3>
+      <div class="info-container">
+        <ul id="awards-ul"></ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
