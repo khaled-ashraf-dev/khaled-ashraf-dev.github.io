@@ -199,3 +199,46 @@ li:not(.no-bullet):before {
 }
 
 /* Skills Icons */
+
+
+
+
+
+/* Preset */
+
+#preset-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.preset-input {
+  font-size: 14px;
+  padding: 8px;
+  border: 2px solid #4169E1;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 150px;
+}
+
+.preset-button {
+  font-size: 14px;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  background-color: #fff;
+}
+
+.preset-button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
