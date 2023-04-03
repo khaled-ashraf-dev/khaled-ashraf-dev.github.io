@@ -5,6 +5,8 @@
   <title>Quest List</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -12,57 +14,72 @@
     <h1>Quest List</h1>
   </header>
   <div class="container" id="parent-element">
-    <table id="myTable">
-      <thead>
-        <tr>
-          <th></th>
-          <th onclick="sortTable(1)">Quest Name</th>
-          <th>Difficulty</th>
-          <th>Length</th>
-          <th>Members</th>
+    <div id="table-section">
+      
+      <input type="text" id="filter-input" placeholder="Filter Results..." oninput="filterTable()">
+      <table id="myTable">
+        <thead>
+          <tr>
+            <th onclick="sortCheckbox(0)">🔘</th>
+            <th onclick="sortAlphabetically(1)">Quest Name</th>
+            <th onclick="customTableSort(2)"">Difficulty</th>
+            <th onclick=" customTableSort(3)"">Length</th>
+            <th onclick="sortAlphabetically(4)"">Members</th>
         </tr>
       </thead>
-      <tbody id="table-body">
-      </tbody>
-    </table>
-    
+      <tbody id=" table-body">
+              </tbody>
+      </table>
+    </div>
+
     <div id="quest-info">
       <h3>Save/Load Presets</h3>
       <div id="preset-div">
         <input id="myInput" type="text" placeholder="Enter preset name..." class="preset-input">
         <button id="save-btn" class="preset-button save-button">Save Preset</button>
-        <button id="load-btn" class="preset-button load-button">Load Preset</button>
       </div>
       <div class="info-container">
         <ul id="saved-presets-ul"></ul>
       </div>
-      <h3>Selected Quests</h3>
+      <h3 id="section-0">Selected Quests</h3>
       <div class="info-container">
         <ul id="selected-quests-ul"></ul>
       </div>
-      
-      <h3>Required Quests</h3>
+
+      <h3 id="section-1">Required Quests</h3>
       <div class="info-container">
         <ul id="required-quests-ul"></ul>
       </div>
-      <h3>Required Items</h3>
+      <h3 id="section-2">Required Items</h3>
       <div class="info-container">
         <ul id="required-items-ul"></ul>
       </div>
-      <h3>Recommended Items</h3>
+      <h3 id="section-3">Recommended Items</h3>
       <div class="info-container">
         <ul id="recommended-items-ul"></ul>
       </div>
-      <h3>Required stats</h3>
+      <h3 id="section-4">Required Stats</h3>
       <div class="info-container">
         <ul id="required-stats-ul"></ul>
       </div>
-      <h3>Awards</h3>
+      <h3 id="section-5">Rewards</h3>
       <div class="info-container">
         <ul id="awards-ul"></ul>
       </div>
-      
+      <div id="scroll-btns">
+
+
+
+        <button id="scroll-btn-1" class="scroll-btn no-icon">1</button>
+        <button id="scroll-btn-2" class="scroll-btn no-icon">2</button>
+        <button id="scroll-btn-3" class="scroll-btn no-icon">3</button>
+        <button id="scroll-btn-4" class="scroll-btn no-icon">4</button>
+        <button id="scroll-btn-5" class="scroll-btn no-icon">5</button>
+        <button id="scroll-top-btn" class="scroll-btn"><i class="fas fa-chevron-up"></i></button>
+        <button id="scroll-bottom-btn" class="scroll-btn"><i class="fas fa-chevron-down"></i></button>
+      </div>
     </div>
+
   </div>
 
 

@@ -51,6 +51,8 @@ fetch("https://raw.githubusercontent.com/khaled-ashraf-dev/khaled-ashraf-dev.git
   .then(data => {
     jsonData = data;
     otherStats();
+    document.querySelector('#filter-input').value = '';
+    document.querySelector('#myInput').value = '';
     data.forEach(quest => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -65,6 +67,8 @@ fetch("https://raw.githubusercontent.com/khaled-ashraf-dev/khaled-ashraf-dev.git
     `;
       table.appendChild(row);
     });
+    sortAlphabetically(1)
+    updatePresets();
   })
   .catch(error => console.log(error));
 
@@ -73,6 +77,8 @@ fetch("https://raw.githubusercontent.com/khaled-ashraf-dev/khaled-ashraf-dev.git
 // Define a function to be called when a checkbox is checked
 function checkboxChanged(event) {
   // Do something here when a checkbox is checked
+  document.querySelector('#filter-input').value = '';
+  document.querySelector('#myInput').value = '';
   let questId = parseInt(event.target.value);
   let questName = jsonData[questId].name;
 
@@ -97,7 +103,6 @@ function updateData() {
   const subcheckboxes = questParentElement.querySelectorAll(".sub-checkbox");
   for (let i = 0; i < subcheckboxes.length; i++) {
     let checkId = parseInt(subcheckboxes[i].getAttribute('sub-quest-id'))
-    console.log(checkId)
     if (subcheckboxes[i].checked === false) {
       if (!subQuestsIds.includes(checkId)) {
         subQuestsIds.push(checkId);
@@ -135,20 +140,27 @@ function addRequiredItems() {
   for (const i of subQuestsIds) {
     let requiredItemsObj = jsonData[i].required_items;
     for (const key of Object.keys(requiredItemsObj)) {
+      let quantity = requiredItemsObj[key]
       if (key in requiredItemsArr) {
-        requiredItemsArr[key] += requiredItemsObj[key];
+        requiredItemsArr[key][1].push(i);
+        requiredItemsArr[key][0] += quantity;
       } else {
-        requiredItemsArr[key] = requiredItemsObj[key];
+        requiredItemsArr[key] = [quantity, [i]];
       };
     }
   };
 
-
+  
   for (const key of Object.keys(requiredItemsArr)) {
-    if (requiredItemsArr[key] === -1) {
-      requiredItemsUl.innerHTML += `<li>${key}</li>`;
+    let span = ``;
+    
+    requiredItemsArr[key][1].forEach((idx) => {
+      span +=  ` <span class="tooltip" data-tooltip="${jsonData[idx].name}">[${idx}]</span> `; 
+    });
+    if (requiredItemsArr[key][0] === -1) {
+      requiredItemsUl.innerHTML += `<li>${key}${span}</li>`;
     } else {
-      requiredItemsUl.innerHTML += `<li>${key} <span class="red">x${requiredItemsArr[key]}</span></li>`;
+      requiredItemsUl.innerHTML += `<li>${key} <span class="red">x${requiredItemsArr[key][0]}</span>${span}</li>`;
     }
 
   }
@@ -161,23 +173,31 @@ function addRecommendedItems() {
   for (const i of subQuestsIds) {
     let recommendedItemsObj = jsonData[i].recommended;
     for (const key of Object.keys(recommendedItemsObj)) {
+      let quantity = recommendedItemsObj[key]
       if (key in recommendedItemsArr) {
-        recommendedItemsArr[key] += recommendedItemsObj[key];
+        recommendedItemsArr[key][1].push(i);
+        recommendedItemsArr[key][0] += quantity;
       } else {
-        recommendedItemsArr[key] = recommendedItemsObj[key];
+        recommendedItemsArr[key] = [quantity, [i]];
       };
     }
   };
 
-
+  
   for (const key of Object.keys(recommendedItemsArr)) {
-    if (recommendedItemsArr[key] === -1) {
-      recommendedItemsUl.innerHTML += `<li>${key}</li>`;
+    let span = ``;
+    
+    recommendedItemsArr[key][1].forEach((idx) => {
+      span +=  ` <span class="tooltip" data-tooltip="${jsonData[idx].name}">[${idx}]</span> `; 
+    });
+    if (recommendedItemsArr[key][0] === -1) {
+      recommendedItemsUl.innerHTML += `<li>${key}${span}</li>`;
     } else {
-      recommendedItemsUl.innerHTML += `<li>${key} <span class="red">x${recommendedItemsArr[key]}</span></li>`;
+      recommendedItemsUl.innerHTML += `<li>${key} <span class="red">x${recommendedItemsArr[key][0]}</span>${span}</li>`;
     }
 
   }
+
 };
 
 function addRequiredStats() {
@@ -252,7 +272,7 @@ function addRequiredQuests() {
 
 
 // Sort table
-function sortTable(colIndex) {
+function sortAlphabetically(colIndex, checksort = false) {
   var table = document.getElementById("myTable");
   var rows = table.tBodies[0].rows;
   var sortedRows = Array.from(rows);
@@ -263,7 +283,7 @@ function sortTable(colIndex) {
     return cellA.localeCompare(cellB);
   });
 
-  if (table.getAttribute("data-sort-order") === "desc") {
+  if (table.getAttribute("data-sort-order") === "desc" && checksort === false) {
     sortedRows.reverse();
     table.setAttribute("data-sort-order", "asc");
   } else {
@@ -275,11 +295,47 @@ function sortTable(colIndex) {
   }
 }
 
+function customTableSort(colIndex) {
+  const table = document.querySelector('table');
+  const rows = Array.from(table.tBodies[0].querySelectorAll('tr'));
+
+  let difficultyMap;
+  // Define a mapping of the difficulty values to numeric values
+  if (colIndex === 3) {
+    difficultyMap = { 'Very Short': 1, Short: 2, Medium: 3, Long: 4, 'Very Long': 5 };
+  } else {
+    difficultyMap = { Novice: 1, Intermediate: 2, Experienced: 3, Master: 4, Grandmaster: 5, Special: 6 };
+  }
+
+  rows.sort((a, b) => {
+    const aCol = a.cells[colIndex].textContent.trim();
+    const bCol = b.cells[colIndex].textContent.trim();
+    const sortOrder = table.getAttribute('data-sort-order') === 'asc' ? -1 : 1;
+    return sortOrder * (difficultyMap[aCol] - difficultyMap[bCol]);
+  });
+
+  table.removeChild(table.tBodies[0]);
+
+  if (table.tBodies.length === 0) {
+    table.appendChild(document.createElement('tbody'));
+  }
+
+  rows.forEach((row) => table.tBodies[0].appendChild(row));
+
+  // Toggle the sort order for the next click
+  if (table.getAttribute('data-sort-col') === colIndex.toString()) {
+    const sortOrder = table.getAttribute('data-sort-order') === 'asc' ? 'desc' : 'asc';
+    table.setAttribute('data-sort-order', sortOrder);
+  } else {
+    table.setAttribute('data-sort-col', colIndex);
+    table.setAttribute('data-sort-order', 'asc');
+  }
+}
+
 
 
 // save presets
 const saveBtn = document.getElementById("save-btn");
-const loadBtn = document.getElementById("load-btn")
 
 function saveStatus() {
   const inputElement = document.getElementById("myInput");
@@ -292,12 +348,12 @@ function saveStatus() {
   });
 
   localStorage.setItem(inputText, JSON.stringify(status));
+  updatePresets();
 
 }
 
-function loadStatus() {
-  const inputElement = document.getElementById("myInput");
-  const inputText = inputElement.value;
+function loadStatus(preset) {
+  const inputText = preset;
   const checkboxes = document.querySelectorAll("#parent-element input[type='checkbox']");
   const loadObject = JSON.parse(localStorage.getItem(inputText));
 
@@ -328,15 +384,16 @@ function otherStats() {
 
 }
 
+function updatePresets() {
 const savedPresetsUl = document.querySelector("#saved-presets-ul")
+savedPresetsUl.innerHTML = ``;
 for (let i = 0; i < localStorage.length; i++) {
   const key = localStorage.key(i);
-  savedPresetsUl.innerHTML += `<li class="saved-preset">${key}</li>`
-  console.log(`${key}`);
-}
+  
+  savedPresetsUl.innerHTML += `<label class="saved-preset" onclick="loadStatus('${key}')">${key}</label> <button class="delete-btn highlight-btn" onclick="deletePreset('${key}')">delete</button><br>`;
+}}
 
 saveBtn.addEventListener("click", saveStatus);
-loadBtn.addEventListener("click", loadStatus);
 
 function highlightFunction(event) {
   const btnForValue = event.target.getAttribute('btn-for');
@@ -374,3 +431,96 @@ questParentElement.addEventListener('click', function (event) {
     clearFunction(event);
   }
 });
+
+
+
+// Up and Down buttons
+const scrollTopBtn = document.getElementById('scroll-top-btn');
+const scrollBottomBtn = document.getElementById('scroll-bottom-btn');
+
+scrollTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+scrollBottomBtn.addEventListener('click', () => {
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+});
+
+
+// Scroll Buttons
+const scrollBtn1 = document.getElementById('scroll-btn-1');
+const scrollBtn2 = document.getElementById('scroll-btn-2');
+const scrollBtn3 = document.getElementById('scroll-btn-3');
+const scrollBtn4 = document.getElementById('scroll-btn-4');
+const scrollBtn5 = document.getElementById('scroll-btn-5');
+
+const section1 = document.getElementById('section-1');
+const section2 = document.getElementById('section-2');
+const section3 = document.getElementById('section-3');
+const section4 = document.getElementById('section-4');
+const section5 = document.getElementById('section-5');
+
+scrollBtn1.addEventListener('click', () => {
+  window.scrollTo({ top: section1.offsetTop, behavior: 'smooth' });
+});
+
+scrollBtn2.addEventListener('click', () => {
+  window.scrollTo({ top: section2.offsetTop, behavior: 'smooth' });
+});
+
+scrollBtn3.addEventListener('click', () => {
+  window.scrollTo({ top: section3.offsetTop, behavior: 'smooth' });
+});
+
+scrollBtn4.addEventListener('click', () => {
+  window.scrollTo({ top: section4.offsetTop, behavior: 'smooth' });
+});
+
+scrollBtn5.addEventListener('click', () => {
+  window.scrollTo({ top: section5.offsetTop, behavior: 'smooth' });
+});
+
+
+/* Sort by checked */ 
+function sortCheckbox(colIndex) {
+  sortAlphabetically(1, true);
+  var table = document.getElementById("myTable");
+  var rows = table.tBodies[0].rows;
+  var sortedRows = Array.from(rows);
+
+  sortedRows.sort(function (rowA, rowB) {
+    var checkboxA = rowA.cells[colIndex].querySelector('input[type="checkbox"]');
+    var checkboxB = rowB.cells[colIndex].querySelector('input[type="checkbox"]');
+    return checkboxA.checked === checkboxB.checked ? 0 : checkboxA.checked ? -1 : 1;
+  });
+
+  for (var i = 0; i < sortedRows.length; i++) {
+    table.tBodies[0].appendChild(sortedRows[i]);
+  }
+}
+
+
+function deletePreset(item) {
+  const itemId = item;
+  const confirmDelete = confirm(`Are you sure you want to delete preset ${item}?`);
+  if (confirmDelete) {
+    localStorage.removeItem(item);
+    updatePresets();
+  }
+}
+
+function filterTable() {
+  const filterInput = document.querySelector('#filter-input');
+  const tableRows = document.querySelectorAll('#myTable tbody tr');
+  const filterValue = filterInput.value.toLowerCase();
+
+  tableRows.forEach((row) => {
+    const rowText = row.textContent.toLowerCase();
+    if (rowText.includes(filterValue)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+;
+}
