@@ -63,7 +63,7 @@ fetch("https://raw.githubusercontent.com/khaled-ashraf-dev/khaled-ashraf-dev.git
       <td>${quest.difficulty}</td>
       <td>${quest.length}</td>
       <td>${quest.members ? "No" : "Yes"}</td>
-      
+      <td>${quest.quest_points}</td>
     `;
       table.appendChild(row);
     });
@@ -77,8 +77,6 @@ fetch("https://raw.githubusercontent.com/khaled-ashraf-dev/khaled-ashraf-dev.git
 // Define a function to be called when a checkbox is checked
 function checkboxChanged(event) {
   // Do something here when a checkbox is checked
-  document.querySelector('#filter-input').value = '';
-  document.querySelector('#myInput').value = '';
   let questId = parseInt(event.target.value);
   let questName = jsonData[questId].name;
 
@@ -95,6 +93,7 @@ function checkboxChanged(event) {
 
   addRequiredQuests();
   updateData();
+  sortCheckbox(0);
 
 };
 
@@ -150,12 +149,12 @@ function addRequiredItems() {
     }
   };
 
-  
+
   for (const key of Object.keys(requiredItemsArr)) {
     let span = ``;
-    
+
     requiredItemsArr[key][1].forEach((idx) => {
-      span +=  ` <span class="tooltip" data-tooltip="${jsonData[idx].name}">[${idx}]</span> `; 
+      span += ` <span class="tooltip">[${idx}]<span class="tooltip-text">${jsonData[idx].name}</span></span> `;
     });
     if (requiredItemsArr[key][0] === -1) {
       requiredItemsUl.innerHTML += `<li>${key}${span}</li>`;
@@ -183,12 +182,12 @@ function addRecommendedItems() {
     }
   };
 
-  
+
   for (const key of Object.keys(recommendedItemsArr)) {
     let span = ``;
-    
+
     recommendedItemsArr[key][1].forEach((idx) => {
-      span +=  ` <span class="tooltip" data-tooltip="${jsonData[idx].name}">[${idx}]</span> `; 
+      span += ` <span class="tooltip">[${idx}]<span class="tooltip-text">${jsonData[idx].name}</span></span> `;
     });
     if (recommendedItemsArr[key][0] === -1) {
       recommendedItemsUl.innerHTML += `<li>${key}${span}</li>`;
@@ -302,9 +301,22 @@ function customTableSort(colIndex) {
   let difficultyMap;
   // Define a mapping of the difficulty values to numeric values
   if (colIndex === 3) {
-    difficultyMap = { 'Very Short': 1, Short: 2, Medium: 3, Long: 4, 'Very Long': 5 };
+    difficultyMap = {
+      'Very Short': 1,
+      Short: 2,
+      Medium: 3,
+      Long: 4,
+      'Very Long': 5
+    };
   } else {
-    difficultyMap = { Novice: 1, Intermediate: 2, Experienced: 3, Master: 4, Grandmaster: 5, Special: 6 };
+    difficultyMap = {
+      Novice: 1,
+      Intermediate: 2,
+      Experienced: 3,
+      Master: 4,
+      Grandmaster: 5,
+      Special: 6
+    };
   }
 
   rows.sort((a, b) => {
@@ -385,13 +397,17 @@ function otherStats() {
 }
 
 function updatePresets() {
-const savedPresetsUl = document.querySelector("#saved-presets-ul")
-savedPresetsUl.innerHTML = ``;
-for (let i = 0; i < localStorage.length; i++) {
-  const key = localStorage.key(i);
-  
-  savedPresetsUl.innerHTML += `<label class="saved-preset" onclick="loadStatus('${key}')">${key}</label> <button class="delete-btn highlight-btn" onclick="deletePreset('${key}')">delete</button><br>`;
-}}
+  const savedPresetsUl = document.querySelector("#saved-presets-ul")
+  savedPresetsUl.innerHTML = ``;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+
+    savedPresetsUl.innerHTML += `<div class="presets-div">
+  <label class="saved-preset" onclick="loadStatus('${key}')">${key}</label>
+  <button class="delete-btn highlight-btn" onclick="deletePreset('${key}')">delete</button>
+  </div>`;
+  }
+}
 
 saveBtn.addEventListener("click", saveStatus);
 
@@ -439,11 +455,17 @@ const scrollTopBtn = document.getElementById('scroll-top-btn');
 const scrollBottomBtn = document.getElementById('scroll-bottom-btn');
 
 scrollTopBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 });
 
 scrollBottomBtn.addEventListener('click', () => {
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
+  });
 });
 
 
@@ -452,36 +474,44 @@ const scrollBtn1 = document.getElementById('scroll-btn-1');
 const scrollBtn2 = document.getElementById('scroll-btn-2');
 const scrollBtn3 = document.getElementById('scroll-btn-3');
 const scrollBtn4 = document.getElementById('scroll-btn-4');
-const scrollBtn5 = document.getElementById('scroll-btn-5');
+
 
 const section1 = document.getElementById('section-1');
 const section2 = document.getElementById('section-2');
 const section3 = document.getElementById('section-3');
 const section4 = document.getElementById('section-4');
-const section5 = document.getElementById('section-5');
+
 
 scrollBtn1.addEventListener('click', () => {
-  window.scrollTo({ top: section1.offsetTop, behavior: 'smooth' });
+  window.scrollTo({
+    top: section1.offsetTop,
+    behavior: 'smooth'
+  });
 });
 
 scrollBtn2.addEventListener('click', () => {
-  window.scrollTo({ top: section2.offsetTop, behavior: 'smooth' });
+  window.scrollTo({
+    top: section2.offsetTop,
+    behavior: 'smooth'
+  });
 });
 
 scrollBtn3.addEventListener('click', () => {
-  window.scrollTo({ top: section3.offsetTop, behavior: 'smooth' });
+  window.scrollTo({
+    top: section3.offsetTop,
+    behavior: 'smooth'
+  });
 });
 
 scrollBtn4.addEventListener('click', () => {
-  window.scrollTo({ top: section4.offsetTop, behavior: 'smooth' });
+  window.scrollTo({
+    top: section4.offsetTop,
+    behavior: 'smooth'
+  });
 });
 
-scrollBtn5.addEventListener('click', () => {
-  window.scrollTo({ top: section5.offsetTop, behavior: 'smooth' });
-});
 
-
-/* Sort by checked */ 
+/* Sort by checked */
 function sortCheckbox(colIndex) {
   sortAlphabetically(1, true);
   var table = document.getElementById("myTable");
@@ -521,6 +551,37 @@ function filterTable() {
     } else {
       row.style.display = 'none';
     }
+  });;
+}
+
+function hideTable() {
+  let elementToHide = document.getElementById('table-section');
+  if (elementToHide.style.display === 'none') {
+    elementToHide.style.display = 'block';
+  } else {
+    elementToHide.style.display = 'none';
+  }
+}
+
+function sortNumerically(colIndex) {
+  var table = document.getElementById("myTable");
+  var rows = table.tBodies[0].rows;
+  var sortedRows = Array.from(rows);
+
+  sortedRows.sort(function (rowA, rowB) {
+    var cellA = parseFloat(rowA.cells[colIndex].textContent.trim());
+    var cellB = parseFloat(rowB.cells[colIndex].textContent.trim());
+    return cellA - cellB;
   });
-;
+
+  if (table.getAttribute("data-sort-order") === "desc") {
+    sortedRows.reverse();
+    table.setAttribute("data-sort-order", "asc");
+  } else {
+    table.setAttribute("data-sort-order", "desc");
+  }
+
+  for (var i = 0; i < sortedRows.length; i++) {
+    table.tBodies[0].appendChild(sortedRows[i]);
+  }
 }

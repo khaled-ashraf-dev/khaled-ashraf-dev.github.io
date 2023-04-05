@@ -22,9 +22,10 @@
           <tr>
             <th onclick="sortCheckbox(0)">🔘</th>
             <th onclick="sortAlphabetically(1)">Quest Name</th>
-            <th onclick="customTableSort(2)"">Difficulty</th>
-            <th onclick=" customTableSort(3)"">Length</th>
-            <th onclick="sortAlphabetically(4)"">Members</th>
+            <th onclick="customTableSort(2)">Difficulty</th>
+            <th onclick=" customTableSort(3)">Length</th>
+            <th onclick="sortAlphabetically(4)">Members</th>
+            <th onclick="sortNumerically(5)">Q</th>
         </tr>
       </thead>
       <tbody id=" table-body">
@@ -50,19 +51,19 @@
       <div class="info-container">
         <ul id="required-quests-ul"></ul>
       </div>
-      <h3 id="section-2">Required Items</h3>
-      <div class="info-container">
-        <ul id="required-items-ul"></ul>
-      </div>
-      <h3 id="section-3">Recommended Items</h3>
-      <div class="info-container">
-        <ul id="recommended-items-ul"></ul>
-      </div>
-      <h3 id="section-4">Required Stats</h3>
+      <h3 id="section-2">Required Stats</h3>
       <div class="info-container">
         <ul id="required-stats-ul"></ul>
       </div>
-      <h3 id="section-5">Rewards</h3>
+      <h3 id="section-3">Required Items</h3>
+      <div class="info-container">
+        <ul id="required-items-ul"></ul>
+      </div>
+      <h3 id="section-5">Recommended Items</h3>
+      <div class="info-container">
+        <ul id="recommended-items-ul"></ul>
+      </div>
+      <h3 id="section-4">Rewards</h3>
       <div class="info-container">
         <ul id="awards-ul"></ul>
       </div>
@@ -70,14 +71,16 @@
 
 
 
-        <button id="scroll-btn-1" class="scroll-btn no-icon">1</button>
-        <button id="scroll-btn-2" class="scroll-btn no-icon">2</button>
-        <button id="scroll-btn-3" class="scroll-btn no-icon">3</button>
-        <button id="scroll-btn-4" class="scroll-btn no-icon">4</button>
-        <button id="scroll-btn-5" class="scroll-btn no-icon">5</button>
+        <button id="scroll-btn-1" class="scroll-btn no-icon tooltip-btn">Q<span class="tooltip-btn-text">Required Quests</span></button>
+        <button id="scroll-btn-2" class="scroll-btn no-icon tooltip-btn">L<span class="tooltip-btn-text">Requires Stats</span></button>
+        <button id="scroll-btn-3" class="scroll-btn no-icon tooltip-btn">I<span class="tooltip-btn-text">Required Items</span></button>
+        <button id="scroll-btn-4" class="scroll-btn no-icon tooltip-btn">R<span class="tooltip-btn-text">Rewards</span></button>
         <button id="scroll-top-btn" class="scroll-btn"><i class="fas fa-chevron-up"></i></button>
         <button id="scroll-bottom-btn" class="scroll-btn"><i class="fas fa-chevron-down"></i></button>
       </div>
+      <button class="hide-table-btn" onclick="hideTable()">◀️
+        <span class="hide-text">hide/show table</span>
+      </button>
     </div>
 
   </div>
@@ -87,3 +90,4 @@
 </body>
 
 </html>
+

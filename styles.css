@@ -16,7 +16,7 @@ body {
 
 #parent-element {
   display: flex;
-  justify-content:start;
+  justify-content: space-around;
   gap: 3rem;
 }
 
@@ -29,6 +29,10 @@ body {
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+}
+
+#table-section {
+  flex: 1;
 }
 
 header {
@@ -110,7 +114,6 @@ a, .saved-preset {
 
 a:hover, .saved-preset:hover {
   color: #1E90FF;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -137,23 +140,15 @@ li:not(.no-bullet):before {
 #quest-info {
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(65, 105, 225, 0.1);
   padding: 20px;
-  margin: 20px;
   width: 100%;
-}
-
-#quest-info {
-  background-color: #fff;
-  border-radius: 5px;
+  max-width: 750px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-  padding: 20px;
   margin: 20px;
 }
 
 
-
-/* hierarchy */ 
+/* hierarchy */
 
 .depth-0 {
   margin-left: 0px;
@@ -203,11 +198,6 @@ li:not(.no-bullet):before {
   font-weight: bold;
 }
 
-/* Skills Icons */
-
-
-
-
 
 /* Preset */
 
@@ -250,7 +240,7 @@ li:not(.no-bullet):before {
   border: none;
   outline: none;
   width: 100%;
-  
+
 }
 
 #filter-input:focus {
@@ -281,7 +271,28 @@ li:not(.no-bullet):before {
   display: inline-block;
   color: red;
   border: none;
+  margin-right: 0;
 }
+
+#saved-presets-ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.presets-div {
+  width: calc(100% / 3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-preset {
+  display: inline-block;
+  word-wrap: break-word;
+}
+
 
 li:hover .hidden-button {
   display: inline-block;
@@ -296,7 +307,7 @@ li:hover .hidden-button {
 
 
 
-/* Scroll buttons */ 
+/* Scroll buttons */
 #scroll-btns {
   display: flex;
   padding-top: 100px;
@@ -317,8 +328,10 @@ li:hover .hidden-button {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 10px;
-  font-size: 1.5rem;
+  padding: 5px;
+  font-size: 1rem;
+  width: 30px;
+  height: 30px;
   border-radius: 5px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
 }
@@ -332,11 +345,9 @@ li:hover .hidden-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 44px;
-  height: 48px;
   background-color: #fff;
   color: #000;
-  
+
 }
 
 
@@ -345,27 +356,108 @@ li:hover .hidden-button {
   color: #4169E1;
   font-size: 0.8em;
   vertical-align: super;
-}
-
-.tooltip::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px;
-  background-color: #333;
-  color: #fff;
-  border-radius: 5px;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  display: inline-block;
 }
 
 .tooltip:hover {
   cursor: pointer;
 }
 
-.tooltip:hover::before {
-  width: 200px;
-  opacity: 1;
+.tooltip .tooltip-text {
+  visibility: hidden;
+  min-width: 120px;
+  max-width: 400px;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 130%;
+  left: 50%;
+  margin-left: -60px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
+
+
+.hide-table-btn {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #3b88c3;
+  color: #000;
+  outline: none;
+  padding: 5px;
+  font-size: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+}
+
+.hide-table-btn:hover {
+  background-color: #fff;
+}
+
+.hide-table-btn:hover span {
+  display: inline-block;
+}
+
+.hide-table-btn span {
+  display: none;
+  margin-left: 5px;
+}
+
+.tooltip-btn {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-btn .tooltip-btn-text {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  width: 120px;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 130%;
+  left: -100%;
+  margin-left: -60px;
+  font-size: 0.9rem;
+}
+
+.tooltip-btn:hover .tooltip-btn-text {
+  visibility: visible;
+}
+
+/* Media query for smaller widths */
+@media (max-width: 768px) {
+  #table-section {
+    display: none;
+  }
+
+  #quest-info {
+    margin: 0;
+  }
+
 }
