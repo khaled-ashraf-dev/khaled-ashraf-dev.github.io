@@ -6,7 +6,16 @@
 }
 
 html {
-  font-size: 40px;
+  font-size: 32px;
+  /*font-size: 16px;*/
+}
+img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+#required-quests-ul label {
+  margin-left: 0.5rem;
 }
 
 body {
@@ -459,7 +468,7 @@ li:hover .hidden-button {
 }
 
 /* Media query for smaller widths */
-@media (max-width: 2500px) {
+@media (max-width: 1750px) {
   #table-section {
     display: none;
   }
