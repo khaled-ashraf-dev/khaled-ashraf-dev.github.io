@@ -1,3 +1,3 @@
-# khaled-ashraf-dev.github.io
+# OldSchool Runescape Quest Helper
 
 ![Project Image](screenshot.png)
